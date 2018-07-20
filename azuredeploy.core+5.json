@@ -1,0 +1,681 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmDeploymentNumber": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "metadata": {
+                "description": "Unique, 2-digit deployment number, e.g. 20"
+            }
+        },
+        "vmImage": {
+            "type": "string",
+            "allowedValues": [
+                "Custom Image - RHEL 7.3 BYOS 2018-03-21",
+                "Custom Image - RHEL 7.3 BYOS 2018-05-16",
+                "Gallery Image - RHEL 7.2",
+                "Gallery Image - RHEL 7.3",
+                "Gallery Image - SLES SAP 12-SP1",
+                "Gallery Image - SLES SAP BYOS 12-SP1",
+                "Gallery Image - SLES SAP 12-SP2",
+                "Gallery Image - SLES SAP BYOS 12-SP2",
+                "Gallery Image - SLES SAP 12-SP3",
+                "Gallery Image - SLES SAP BYOS 12-SP3",
+                "Gallery Image - Windows Server 2012 Datacenter",
+                "Gallery Image - Windows Server 2012 R2 Datacenter",
+                "Gallery Image - Windows Server 2016 Datacenter",
+                "Gallery Image - Oracle Linux 7.2"
+            ],
+            "defaultValue": "Custom Image - RHEL 7.3 BYOS 2018-03-21",
+            "metadata": {
+                "description": "The Virtual Machine operating system you want to deploy"
+            }
+        },
+        "vmAdminUserName": {
+            "type": "string",
+            "defaultValue": "azureuser"
+        },
+        "vmAdminPassword": {
+            "type": "securestring"
+        },
+        "vmIpAddressISU": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "vmIpAddressCRM": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "vmIpAddressPIC": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "vmIpAddressJVA": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "vmIpAddressNGW": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "deployBWA":{
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+              "description": "Choose to deploy BWA instance of SAP"
+          }
+        },
+        "vmIpAddressBWA": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "deployMOB":{
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+              "description": "Choose to deploy MOB instance of SAP"
+          }
+        },
+        "vmIpAddressMOB": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "deployEWM":{
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+              "description": "Choose to deploy EWM instance of SAP"
+          }
+        },
+        "vmIpAddressEWM": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "deployCEV":{
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+              "description": "Choose to deploy CEV instance of SAP"
+          }
+        },
+        "vmIpAddressCEV": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        },
+        "deployPIN":{
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No",
+            "metadata": {
+              "description": "Choose to deploy PIN instance of SAP"
+          }
+        },
+        "vmIpAddressPIN": {
+            "type": "string",
+            "maxLength": 15,
+            "defaultValue": "",
+            "metadata": {
+                "description": "Static IP addresses of 2nd IP. If the address is blank, DHCP will be used"
+            }
+        }
+    },
+    "variables": {
+        "uniqueDeploymentId.ISU": "[concat(parameters('vmDeploymentNumber'), '.ISU')]",
+        "azuredeploy.ISU.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.ISU'))]",
+        "uniqueDeploymentId.CRM": "[concat(parameters('vmDeploymentNumber'), '.CRM')]",
+        "azuredeploy.CRM.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.CRM'))]",
+        "uniqueDeploymentId.PIC": "[concat(parameters('vmDeploymentNumber'), '.PIC')]",
+        "azuredeploy.PIC.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.PIC'))]",
+        "uniqueDeploymentId.BWA": "[concat(parameters('vmDeploymentNumber'), '.BWA')]",
+        "azuredeploy.BWA.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.BWA'))]",
+        "uniqueDeploymentId.MOB": "[concat(parameters('vmDeploymentNumber'), '.MOB')]",
+        "azuredeploy.MOB.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.MOB'))]",
+        "uniqueDeploymentId.EWM": "[concat(parameters('vmDeploymentNumber'), '.EWM')]",
+        "azuredeploy.EWM.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.EWM'))]",
+        "uniqueDeploymentId.JVA": "[concat(parameters('vmDeploymentNumber'), '.JVA')]",
+        "azuredeploy.JVA.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.JVA'))]",
+        "uniqueDeploymentId.CEV": "[concat(parameters('vmDeploymentNumber'), '.CEV')]",
+        "azuredeploy.CEV.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.CEV'))]",
+        "uniqueDeploymentId.PIN": "[concat(parameters('vmDeploymentNumber'), '.PIN')]",
+        "azuredeploy.PIN.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.PIN'))]",
+        "uniqueDeploymentId.NGW": "[concat(parameters('vmDeploymentNumber'), '.NGW')]",
+        "azuredeploy.NGW.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.NGW'))]",
+        "azuredeploy.templateuri": "https://azwudsapvmscripts.blob.core.windows.net/etedevtesttemplates/azuredeploy.json?sv=2017-11-09&ss=b&srt=sco&sp=r&se=2020-07-18T22:14:01Z&st=2018-07-18T14:14:01Z&spr=https&sig=oua6Y2HS%2Bef1hhvszA5Zv3yT1TBt2YIQlPQg9rLfM%2BQ%3D"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.ISU.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "ISU"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressISU')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.CRM.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "CRM"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressCRM')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.PIC.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "PIC"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressPIC')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('deployBWA'),'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.BWA.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "BWA"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressBWA')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('deployMOB'),'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.MOB.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "MOB"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressMOB')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+
+        {
+            "condition": "[equals(parameters('deployEWM'),'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.EWM.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "EWM"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressEWM')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.JVA.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "JVA"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressJVA')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('deployCEV'),'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.CEV.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "CEV"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressCEV')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('deployPIN'),'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.PIN.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "PIN"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressPIN')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.NGW.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "NGW"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "vmIpAddresses": {
+                        "value": [
+                            "",
+                            "[parameters('vmIpAddressNGW')]"
+                        ]
+                    },
+                    "containerSasToken": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "/subscriptions/a8d854f2-407b-4bbe-9575-11cc184a7aa3/resourceGroups/azwu-rg-sapdevtest-vmstorageaccounts/providers/Microsoft.KeyVault/vaults/azwudsapstoragekeys"
+                          },
+                          "secretName": "azwusapvmscriptssaskey1"
+                        }
+                    }                    
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
