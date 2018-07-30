@@ -77,29 +77,14 @@ Param(
     [string]$End_date
 
 )
-
-$ServiceTicketRequestID_tag = @{"Service Ticket Request ID" = "$ServiceTicketRequestID"}
-#
-$CostCodeID_tag = @{"Cost Code ID" = "$CostCodeID"}
-#
-$ProjectCode_tag = @{"Project Code" = "$ProjectCode"}
-#
-$ProjectNumber_tag = @{"Project Number" = "$ProjectNumber"}
-#
-$ProjectName_tag   = @{"Project Name" = "$ProjectName"}
-#
-$Start_date_tag   = @{"Start_date" = "$Start_date"}
-#
-$End_date_tag  = @{"End_date" = "$End_date"}
-#
 ########################################################################################################################
 # Pre-validations and Error handling
 ########################################################################################################################
 # When running on Windows, the presence of AzureRM module is checked
 if (($PSVersionTable.Platform -ne "Unix") -and ($PSVersionTable.PSEdition -ne "Core"))
 {
-    $AzureRMProfileVersion = (Get-Module -ListAvailable AzureRM.Profile).Version
-    if (-not(($AzureRMProfileVersion.Major -ge 3 -and $AzureRMProfileVersion.Minor -ge 4) -or ($AzureRMProfileVersion.Major -gt 3))) {
+    $AzureRMResourcesVersion = (Get-Module -ListAvailable AzureRM.Resources).Version
+    if (-not(($AzureRMResourcesVersion.Major -ne 6 -and $AzureRMResourcesVersion.Minor -ne 2))) {
         Write-Error -Message "Please install the latest Azure PowerShell and retry. Relevant doc url : https://docs.microsoft.com/powershell/azureps-cmdlets-docs/ "
         break
     }
@@ -120,55 +105,75 @@ if (-not (Get-Command Connect-AzureRmAccount -ErrorAction SilentlyContinue))
 }
 #
 
+#
+$ServiceTicketRequestID_tag = @{"Service Ticket Request ID" = "$ServiceTicketRequestID"}
+#
+$CostCodeID_tag = @{"Cost Code ID" = "$CostCodeID"}
+#
+$ProjectCode_tag = @{"Project Code" = "$ProjectCode"}
+#
+$ProjectNumber_tag = @{"Project Number" = "$ProjectNumber"}
+#
+$ProjectName_tag   = @{"Project Name" = "$ProjectName"}
+#
+$Start_date_tag   = @{"Start_date" = "$Start_date"}
+#
+$End_date_tag  = @{"End_date" = "$End_date"}
+#
+
+
+
+
+
 $resourcevalues= Get-AzureRmResource | Where-Object{$_.ResourceGroupName -eq $resourceGroupName}
 foreach($resource in $resourcevalues){
-    Write-Output "Current Tags for the ResourceName: $($resource.ResourceName) in ResourceGroup:$($resourceGroupName)"
-    $Tags = $resource.Tags
+    Write-Output "Current Tags for the ResourceName: $($resource.Name) in ResourceGroup:$($resourceGroupName)"
+    $tags = $resource.Tags
     [System.Collections.ArrayList]$TagsArrayList = $Tags
     foreach($ResourceTag in $TagsArrayList){
         Write-Output $ResourceTag
         #
-        if(($ResourceTag.Name -eq $ServiceTicketRequestID_tag.Keys)-and ($ServiceTicketRequestID_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $ServiceTicketRequestID_tag.Keys)-and ($ServiceTicketRequestID_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($ServiceTicketRequestID_tag.Keys),$($ServiceTicketRequestID_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $CostCodeID_tag.Keys)-and ($CostCodeID_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $CostCodeID_tag.Keys)-and ($CostCodeID_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($CostCodeID_tag.Keys),$($CostCodeID_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $ProjectCode_tag.Keys)-and ($ProjectCode_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $ProjectCode_tag.Keys)-and ($ProjectCode_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($ProjectCode_tag.Keys),$($ProjectCode_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $ProjectNumber_tag.Keys)-and ($ProjectNumber_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $ProjectNumber_tag.Keys)-and ($ProjectNumber_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($ProjectNumber_tag.Keys),$($ProjectNumber_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $ProjectName_tag.Keys)-and ($ProjectName_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $ProjectName_tag.Keys)-and ($ProjectName_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($ProjectName_tag.Keys),$($ProjectName_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $Start_date_tag.Keys)-and ($Start_date_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $Start_date_tag.Keys)-and ($Start_date_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($Start_date_tag.Keys),$($Start_date_tag.Values))
         }
         #
-        if(($ResourceTag.Name -eq $End_date_tag.Keys)-and ($End_date_tag.Values -ne "")){
-            $tags.Remove($ResourceTag.Name)
+        if(($ResourceTag.key -eq $End_date_tag.Keys)-and ($End_date_tag.Values -ne "")){
+            $tags.Remove($ResourceTag.key)
             $tags.Add($($End_date_tag.Keys),$($End_date_tag.Values))
         }
     }
     Write-Output ""
-
-    Write-Output "New Tags for the ResourceName: $($resource.ResourceName) in ResourceGroup:$($resourceGroupName)"
+    Write-Output "New Tags for the ResourceName: $($resource.Name) in ResourceGroup:$($resourceGroupName)"
     Write-Output $tags
+    Write-Output ""
 
-    Set-AzureRmResource -ResourceGroupName $resourceGroupName -ResourceName $($resource.ResourceName) -ResourceType $resource.ResourceType -Tag $Tags -Force -verbose
+    Set-AzureRmResource -ResourceGroupName $resourceGroupName -ResourceName $($resource.Name) -ResourceType $resource.ResourceType -Tag $Tags -Force -verbose
 }
 
 
