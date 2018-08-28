@@ -1,0 +1,109 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "hLoadBalancerName": {
+            "defaultValue": "hana-lb",
+            "type": "string"
+        },
+        "dbInstanceNumber": {
+            "defaultValue": 50,
+            "type": "int"
+        }               
+    },
+    "variables": {
+        "hLoadBalancerFrontend": "frontend",
+        "hBackendPool": "backend",
+        "hProbePort": "probe",
+        "hProbePortInternal": "[add(62500, parameters('dbInstanceNumber'))]",
+        "lbIdleTimeoutInMinutes": 30,
+        "lbrulePrefix": "lb-"
+    },
+    "resources":[
+        {
+            "condition": "[equals(parameters('params').vmRoleType,'han')]",
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('hLoadBalancerName')]",
+            "apiVersion": "2018-04-01",
+            "location": "[parameters('params').location]",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [],
+
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "properties": {
+                            "subnet": {
+                                "id": "[parameters('params').internalSubnetId]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        },
+                        "name": "[variables('hLoadBalancerFrontend')]"
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[variables('hBackendPool')]"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('hLoadBalancerName'), variables('hLoadBalancerFrontend'))]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('hLoadBalancerName'), variables('hBackendPool'))]"
+                            },
+                            "probe": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('hLoadBalancerName'), variables('hProbePort'))]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": "[add(30015, mul(parameters('dbInstanceNumber'), 100))]",
+                            "backendPort": "[add(30015, mul(parameters('dbInstanceNumber'), 100))]",
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                        },
+                        "name": "[concat(variables('lbrulePrefix'), '3', padLeft(parameters('dbInstanceNumber'), 2, '0'), '15')]"
+                    },
+                    {
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('hLoadBalancerName'), variables('hLoadBalancerFrontend'))]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('hLoadBalancerName'), variables('hBackendPool'))]"
+                            },
+                            "probe": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('hLoadBalancerName'), variables('hProbePort'))]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": "[add(30017, mul(parameters('dbInstanceNumber'), 100))]",
+                            "backendPort": "[add(30017, mul(parameters('dbInstanceNumber'), 100))]",
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                        },
+                        "name": "[concat(variables('lbrulePrefix'), '3', padLeft(parameters('dbInstanceNumber'), 2, '0'), '17')]"
+                    }
+                ],
+                "probes": [
+                    {
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": "[variables('hProbePortInternal')]",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        },
+                        "name": "[variables('hProbePort')]"
+                    }
+                ]
+            }
+        }
+    ]
+  }

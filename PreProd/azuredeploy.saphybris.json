@@ -1,0 +1,581 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sapSystemId": {
+            "type": "string",
+            "maxLength": 3,
+            "minLength": 3,
+            "metadata": {
+                "description": "3-Character SAP System ID"
+            }
+        },
+        "vmDeploymentNumber": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "metadata": {
+                "description": "Unique, 2-digit deployment number, e.g. 20"
+            }
+        },
+        "vmImage": {
+            "type": "string",
+            "allowedValues": [
+                "Gallery Image - SLES SAP BYOS 12-SP3"
+            ],
+            "defaultValue": "Gallery Image - SLES SAP BYOS 12-SP3",
+            "metadata": {
+                "description": "The Virtual Machine operating system you want to deploy"
+            }
+        },
+        "vmAdminUserName": {
+            "type": "string",
+            "defaultValue": "azureuser"
+        },
+        "vmAdminPassword": {
+            "type": "securestring"
+        },
+        "Scs-1-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Scs-1-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "Scs-1-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Scs-1-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "Scs-2-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Scs-2-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "Scs-2-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Scs-2-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-1-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-1-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-1-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-1-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-2-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-2-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-2-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-2-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-3-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-3-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-3-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-3-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-4-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-4-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "App-4-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for App-4-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "Db-1-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Db-1-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "Db-1-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Db-2-Nic-2. If any address is blank, DHCP will be used"
+            }
+        },
+        "Db-2-Nic-1": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Db-2-Nic-1. If any address is blank, DHCP will be used"
+            }
+        },
+        "Db-2-Nic-2": {
+            "type": "array",
+            "minLength": 1,
+            "defaultValue": [
+                ""
+            ],
+            "metadata": {
+                "description": "Array of static IP addresses for Db-2-Nic-2. If any address is blank, DHCP will be used"
+            }
+        }
+    },
+    "variables": {
+        "uniqueDeploymentId.Scs.1": "[concat(parameters('vmDeploymentNumber'), '.Scs.1')]",
+        "azuredeploy.Scs.1.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.Scs.1'))]",
+        "uniqueDeploymentId.Scs.2": "[concat(parameters('vmDeploymentNumber'), '.Scs.2')]",
+        "azuredeploy.Scs.2.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.Scs.2'))]",
+        "uniqueDeploymentId.App.1": "[concat(parameters('vmDeploymentNumber'), '.app.1')]",
+        "azuredeploy.App.1.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.App.1'))]",
+        "uniqueDeploymentId.App.2": "[concat(parameters('vmDeploymentNumber'), '.app.2')]",
+        "azuredeploy.App.2.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.App.2'))]",
+        "uniqueDeploymentId.App.3": "[concat(parameters('vmDeploymentNumber'), '.app.3')]",
+        "azuredeploy.App.3.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.App.3'))]",
+        "uniqueDeploymentId.App.4": "[concat(parameters('vmDeploymentNumber'), '.app.4')]",
+        "azuredeploy.App.4.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.App.4'))]",
+        "uniqueDeploymentId.Db.1": "[concat(parameters('vmDeploymentNumber'), '.db.1')]",
+        "azuredeploy.Db.1.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.Db.1'))]",
+        "uniqueDeploymentId.Db.2": "[concat(parameters('vmDeploymentNumber'), '.db.2')]",
+        "azuredeploy.Db.2.templatename": "[concat('azuredeploy.', variables('uniqueDeploymentId.Db.2'))]",
+        "azuredeploy.templateuri": "[uri(deployment().properties.templateLink.uri, 'azuredeploy.json')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.Scs.1.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "1"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "SCS - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('Scs-1-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('Scs-1-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.Scs.2.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "2"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "SCS - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('Scs-2-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('Scs-2-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.App.1.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "1"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "App - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('App-1-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('App-1-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.App.2.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "2"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "App - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('App-2-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('App-2-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.App.3.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "3"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "App - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('App-3-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('App-3-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.App.4.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "4"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "App - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('App-4-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('App-4-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.Db.1.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "1"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "DB - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('Db-1-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('Db-1-Nic-2')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "[variables('azuredeploy.Db.2.templatename')]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('azuredeploy.templateuri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "debugSetting": {
+                    "detailLevel": "requestContent, responseContent"
+                },
+                "parameters": {
+                    "sapSystemId": {
+                        "value": "[parameters('sapSystemId')]"
+                    },
+                    "vmDeploymentNumber": {
+                        "value": "[parameters('vmDeploymentNumber')]"
+                    },
+                    "vmInstanceNumber": {
+                        "value": "2"
+                    },
+                    "vmImage": {
+                        "value": "[parameters('vmImage')]"
+                    },
+                    "vmRole": {
+                        "value": "DB - SAP Hybris"
+                    },
+                    "vmAdminUserName": {
+                        "value": "[parameters('vmAdminUserName')]"
+                    },
+                    "vmAdminPassword": {
+                        "value": "[parameters('vmAdminPassword')]"
+                    },
+                    "nic1IpAddresses": {
+                        "value": "[parameters('Db-2-Nic-1')]"
+                    },
+                    "nic2IpAddresses": {
+                        "value": "[parameters('Db-2-Nic-2')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

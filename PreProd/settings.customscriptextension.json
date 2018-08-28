@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "customScriptArgument": {
+            "SAP PreProduction": {
+                "ukwest": {
+                    "App - SAP Insurance": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Utilities": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP NW Gateway": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP NW PO": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Hybris": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP BW": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Cloud Connector": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "SCS - SAP Insurance": "-luns",
+                    "SCS - SAP Utilities": "-luns",
+                    "SCS - SAP NW Gateway": "-luns",
+                    "SCS - SAP NW PO": "-luns",
+                    "SCS - SAP Hybris": "-luns",
+                    "SCS - SAP BW": "-luns",
+                    "SCS - SAP Cloud Connector": "-luns",
+                    "DB - SAP Insurance": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Utilities": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP NW Gateway": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP NW PO": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Hybris": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP BW": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Cloud Connector": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'"
+                },
+                "uksouth": {
+                    "App - SAP Insurance": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Utilities": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP NW Gateway": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP NW PO": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Hybris": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP BW": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "App - SAP Cloud Connector": "[concat('-luns 0 -names sap -paths /usr/sap/', parameters('params').sapSystemId)]",
+                    "SCS - SAP Insurance": "-luns",
+                    "SCS - SAP Utilities": "-luns",
+                    "SCS - SAP NW Gateway": "-luns",
+                    "SCS - SAP NW PO": "-luns",
+                    "SCS - SAP Hybris": "-luns",
+                    "SCS - SAP BW": "-luns",
+                    "SCS - SAP Cloud Connector": "-luns",
+                    "DB - SAP Insurance": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Utilities": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP NW Gateway": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP NW PO": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Hybris": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP BW": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'",
+                    "DB - SAP Cloud Connector": "-luns '0,1,2#3,4#5#6#7,8' -names 'data#log#shared#usrsap#backup' -paths '/hana/data#/hana/log#/hana/shared#/usr/sap#/hana/backup' -sizes '100#100#100#100#100'"
+                }
+            }
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "value": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [],
+                    "commandToExecute": "[concat('while [ ! -f /var/lib/waagent/CustomData ];do sleep 1;done;sleep 10;cat /var/lib/waagent/CustomData | base64 --decode | sh -s -- ', variables('customScriptArgument')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole])]"
+                },
+                "protectedSettings": {}
+            },
+            "type": "object"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "tagServiceNames": {
+            "App - SAP Insurance": {"tagServiceName": "App - SAP Insurance"},
+            "App - SAP Utilities": {"tagServiceName": "App - SAP Utilities"},
+            "App - SAP NW Gateway": {"tagServiceName": "App - SAP NW Gateway"},
+            "App - SAP NW PO": {"tagServiceName": "App - SAP NW PO"},
+            "App - SAP Hybris": {"tagServiceName": "App - SAP Hybris"},
+            "App - SAP BW": {"tagServiceName": "App - SAP BW"},
+            "App - SAP Cloud Connector": {"tagServiceName": "App - SAP Cloud Connector"},
+            "SCS - SAP Insurance": {"tagServiceName": "SCS - SAP Insurance"},
+            "SCS - SAP Utilities": {"tagServiceName": "SCS - SAP Utilities"},
+            "SCS - SAP NW Gateway": {"tagServiceName": "SCS - SAP NW Gateway"},
+            "SCS - SAP NW PO": {"tagServiceName": "SCS - SAP NW PO"},
+            "SCS - SAP Hybris": {"tagServiceName": "SCS - SAP Hybris"},
+            "SCS - SAP BW": {"tagServiceName": "SCS - SAP BW"},
+            "SCS - SAP Cloud Connector": {"tagServiceName": "SCS - SAP Cloud Connector"},
+            "DB - SAP Insurance": {"tagServiceName": "DB - SAP Insurance"},
+            "DB - SAP Utilities": {"tagServiceName": "DB - SAP Utilities"},
+            "DB - SAP NW Gateway": {"tagServiceName": "DB - SAP NW Gateway"},
+            "DB - SAP NW PO": {"tagServiceName": "DB - SAP NW PO"},
+            "DB - SAP Hybris": {"tagServiceName": "DB - SAP Hybris"},
+            "DB - SAP BW": {"tagServiceName": "DB - SAP BW"},
+            "DB - SAP Cloud Connector": {"tagServiceName": "DB - SAP Cloud Connector"}
+        },
+        "tagEnvironments": {
+            "SAP PreProduction": {
+                "tagEnvironment": "SAP PreProduction"
+            }
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "type": "object",
+            "value": {
+                "Environment": "[variables('tagEnvironments')[parameters('params').subscription].tagEnvironment]",
+                "Service Name": "[variables('tagServiceNames')[parameters('params').vmRole].tagServiceName]",
+                "Service Owner": "James Edwards",
+                "Source": "SAPAzureARMTemplate via servicenow"
+            }
+        }
+    }
+}
