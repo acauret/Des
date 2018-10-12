@@ -1,15 +1,15 @@
 ﻿########################################################################################################################
 # Script Disclaimer
 ########################################################################################################################
-# This script is not supported under any Microsoft standard support program or service.
+# This script is not supported under any Servent standard support program or service.
 # This script is provided AS IS without warranty of any kind.
-# Microsoft disclaims all implied warranties including, without limitation, any implied warranties of
+# Servent disclaims all implied warranties including, without limitation, any implied warranties of
 # merchantability or of fitness for a particular purpose. The entire risk arising out of the use or
-# performance of this script and documentation remains with you. In no event shall Microsoft, its authors,
+# performance of this script and documentation remains with you. In no event shall Servent, its authors,
 # or anyone else involved in the creation, production, or delivery of this script be liable for any damages
 # whatsoever (including, without limitation, damages for loss of business profits, business interruption,
 # loss of business information, or other pecuniary loss) arising out of the use of or inability to use
-# this script or documentation, even if Microsoft has been advised of the possibility of such damages.
+# this script or documentation, even if Servent has been advised of the possibility of such damages.
 
 <#
 .Synopsis
@@ -20,9 +20,9 @@
 .OUTPUTS
    <none>
 .NOTES
-    Version:        1.0
+    Version:        1.1
     Author:         Andrew Auret
-    Creation Date:  2018-07-29
+    Creation Date:  12-10-2018
 #>
 
 
@@ -103,9 +103,7 @@ if (-not (Get-Command Connect-AzureRmAccount -ErrorAction SilentlyContinue))
     Write-Error "Please install the required module to be able to run the ""Connect-AzureRmAccount"" commandlet. The module's name varies based on the platform of your choice. It's typically one of the followings: AzureRM, AzureRM.Profile.Netcore"
     break
 }
-#
-
-#
+#Tags
 $ServiceTicketRequestID_tag = @{"Service Ticket Request ID" = "$ServiceTicketRequestID"}
 #
 $CostCodeID_tag = @{"Cost Code ID" = "$CostCodeID"}
@@ -120,11 +118,32 @@ $Start_date_tag   = @{"Start_date" = "$Start_date"}
 #
 $End_date_tag  = @{"End_date" = "$End_date"}
 #
+#ResourceGroup tagging
+$resourcegroup= Get-AzureRmResourceGroup | Where-Object{$_.ResourceGroupName -eq $resourceGroupName} -ErrorAction SilentlyContinue
+if($ServiceTicketRequestID_tag.Values -ne ""){
+    $Tags = $ServiceTicketRequestID_tag
+}
+if($CostCodeID_tag.Values -ne ""){
+    $Tags = $Tags + $CostCodeID_tag
+}
+if($ProjectCode_tag.Values -ne ""){
+    $Tags = $Tags + $ProjectCode_tag
+}
+if($ProjectNumber_tag.Values -ne ""){
+    $Tags = $Tags + $ProjectNumber_tag
+}
+if($ProjectName_tag.Values -ne ""){
+    $Tags = $Tags + $ProjectName_tag
+}
+if($Start_date_tag.Values -ne ""){
+    $Tags = $Tags + $Start_date_tag
+}
+if($End_date_tag.Values -ne ""){
+    $Tags = $Tags + $End_date_tag
+}
+Set-AzureRmResourceGroup -id $resourcegroup.ResourceId -Tag $Tags -Verbose
 
-
-
-
-
+#Resource tagging
 $resourcevalues= Get-AzureRmResource | Where-Object{$_.ResourceGroupName -eq $resourceGroupName}
 foreach($resource in $resourcevalues){
     Write-Output "Current Tags for the ResourceName: $($resource.Name) in ResourceGroup:$($resourceGroupName)"
