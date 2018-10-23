@@ -1,0 +1,1442 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "dataDiskSizes": {
+            "SAP PreProduction": {
+                "ukwest": {
+                    "App - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "DB - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    }
+                },
+                "uksouth": {
+                    "App - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "App - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "SCS - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 128
+                            }
+                        ]
+                    },
+                    "DB - SAP Insurance": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Utilities": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP NW Gateway": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP NW PO": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Hybris": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP BW": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    },
+                    "DB - SAP Cloud Connector": {
+                        "disks": [
+                            {
+                                "lun": 0,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-00')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 1,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-01')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 2,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-02')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 3,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-03')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 4,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-04')]",
+                                "caching": "None",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 512
+                            },
+                            {
+                                "lun": 5,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-05')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 1024
+                            },
+                            {
+                                "lun": 6,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-06')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 64
+                            },
+                            {
+                                "lun": 7,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-07')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            },
+                            {
+                                "lun": 8,
+                                "name": "[concat(parameters('params').vmName,'-datadisk-08')]",
+                                "caching": "ReadOnly",
+                                "writeAcceleratorEnabled": false,
+                                "createOption": "Empty",
+                                "diskSizeGB": 2048
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "dataDisksObj": {
+            "copy": [
+                {
+                    "name": "dataDisks",
+                    "count": "[length(variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks)]",
+                    "input": {
+                        "lun": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].lun]",
+                        "name": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].name]",
+                        "caching": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].caching]",
+                        "writeAcceleratorEnabled": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].writeAcceleratorEnabled]",
+                        "createOption": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].CreateOption]",
+                        "diskSizeGB": "[variables('dataDiskSizes')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].disks[copyIndex('dataDisks')].diskSizeGB]"
+                    }
+                }
+            ]
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "value": "[variables('dataDisksObj')[string('dataDisks')]]",
+            "type": "array"
+        }
+    }
+}

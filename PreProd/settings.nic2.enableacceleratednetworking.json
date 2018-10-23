@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "acceleratedNetworking": {
+            "SAP PreProduction": {
+                "ukwest": {
+                    "App - SAP Insurance": false,
+                    "App - SAP Utilities": false,
+                    "App - SAP NW Gateway": false,
+                    "App - SAP NW PO": false,
+                    "App - SAP Hybris": false,
+                    "App - SAP BW": false,
+                    "App - SAP Cloud Connector": false,
+                    "SCS - SAP Insurance": false,
+                    "SCS - SAP Utilities": false,
+                    "SCS - SAP NW Gateway": false,
+                    "SCS - SAP NW PO": false,
+                    "SCS - SAP Hybris": false,
+                    "SCS - SAP BW": false,
+                    "SCS - SAP Cloud Connector": false,
+                    "DB - SAP Insurance": true,
+                    "DB - SAP Utilities": true,
+                    "DB - SAP NW Gateway": true,
+                    "DB - SAP NW PO": true,
+                    "DB - SAP Hybris": true,
+                    "DB - SAP BW": true,
+                    "DB - SAP Cloud Connector": true
+                },
+                "uksouth": {
+                    "App - SAP Insurance": false,
+                    "App - SAP Utilities": false,
+                    "App - SAP NW Gateway": false,
+                    "App - SAP NW PO": false,
+                    "App - SAP Hybris": false,
+                    "App - SAP BW": false,
+                    "App - SAP Cloud Connector": false,
+                    "SCS - SAP Insurance": false,
+                    "SCS - SAP Utilities": false,
+                    "SCS - SAP NW Gateway": false,
+                    "SCS - SAP NW PO": false,
+                    "SCS - SAP Hybris": false,
+                    "SCS - SAP BW": false,
+                    "SCS - SAP Cloud Connector": false,
+                    "DB - SAP Insurance": true,
+                    "DB - SAP Utilities": true,
+                    "DB - SAP NW Gateway": true,
+                    "DB - SAP NW PO": true,
+                    "DB - SAP Hybris": true,
+                    "DB - SAP BW": true,
+                    "DB - SAP Cloud Connector": true
+                }
+            }
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "value": "[variables('acceleratedNetworking')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole]]",
+            "type": "bool"
+        }
+    }
+}

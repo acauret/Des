@@ -1,0 +1,88 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "subnets": {
+            "SAP PreProduction": {
+                "ukwest": {
+                    "App - SAP Insurance": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-insurance-an-001')]"},
+                    "App - SAP Utilities": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-utilities-an-001')]"},
+                    "App - SAP NW Gateway": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "App - SAP NW PO": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "App - SAP Hybris": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-hybris-an-001')]"},
+                    "App - SAP BW": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-bw-an-001')]"},
+                    "App - SAP Cloud Connector": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-cloud-connect-an-001')]"},
+                    "SCS - SAP Insurance": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-insurance-an-001')]"},
+                    "SCS - SAP Utilities": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-utilities-an-001')]"},
+                    "SCS - SAP NW Gateway": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "SCS - SAP NW PO": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "SCS - SAP Hybris": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-hybris-an-001')]"},
+                    "SCS - SAP BW": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-bw-an-001')]"},
+                    "SCS - SAP Cloud Connector": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-cloud-connect-an-001')]"},
+                    "DB - SAP Insurance": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-insurance-an-001')]"},
+                    "DB - SAP Utilities": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-utilities-an-001')]"},
+                    "DB - SAP NW Gateway": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "DB - SAP NW PO": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "DB - SAP Hybris": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-hybris-an-001')]"},
+                    "DB - SAP BW": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-bw-an-001')]"},
+                    "DB - SAP Cloud Connector": {"id": "[resourceId('azwu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azwu-vnet-preprod-sap-001', 'azwu-subn-sap-preprod-cloud-connect-an-001')]"}
+                },
+                "uksouth": {
+                    "App - SAP Insurance": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-insurance-an-001')]"},
+                    "App - SAP Utilities": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-utilities-an-001')]"},
+                    "App - SAP NW Gateway": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "App - SAP NW PO": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "App - SAP Hybris": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-hybris-an-001')]"},
+                    "App - SAP BW": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-bw-an-001')]"},
+                    "App - SAP Cloud Connector": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-cloud-connect-an-001')]"},
+                    "SCS - SAP Insurance": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-insurance-an-001')]"},
+                    "SCS - SAP Utilities": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-utilities-an-001')]"},
+                    "SCS - SAP NW Gateway": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "SCS - SAP NW PO": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "SCS - SAP Hybris": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-hybris-an-001')]"},
+                    "SCS - SAP BW": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-bw-an-001')]"},
+                    "SCS - SAP Cloud Connector": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-cloud-connect-an-001')]"},
+                    "DB - SAP Insurance": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-insurance-an-001')]"},
+                    "DB - SAP Utilities": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-utilities-an-001')]"},
+                    "DB - SAP NW Gateway": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-gateway-an-001')]"},
+                    "DB - SAP NW PO": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-nw-pi-an-001')]"},
+                    "DB - SAP Hybris": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-hybris-an-001')]"},
+                    "DB - SAP BW": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-bw-an-001')]"},
+                    "DB - SAP Cloud Connector": {"id": "[resourceId('azsu-rg-sap-preprod-defaultnetworking-001', 'Microsoft.Network/virtualNetworks/subnets', 'azsu-vnet-preprod-sap-001', 'azsu-subn-sap-preprod-cloud-connect-an-001')]"}
+                }
+            }
+        },
+        "ipConfigurationsObj": {
+            "copy": [
+                {
+                    "name": "ipConfigurations",
+                    "count": "[length(parameters('params').nic1IpAddresses)]",
+                    "input": {
+                        "name": "[concat('ipconfig',padLeft(copyIndex('ipConfigurations'),2,'0'))]",
+                        "properties": {
+                            "privateIPAddress": "[if(equals(parameters('params').nic1IpAddresses[copyIndex('ipConfigurations')],''),'',parameters('params').nic1IpAddresses[copyIndex('ipConfigurations')])]",
+                            "privateIPAllocationMethod": "[if(equals(parameters('params').nic1IpAddresses[copyIndex('ipConfigurations')],''),'Dynamic','Static')]",
+                            "privateIpAddressVersion": "IPv4",
+                            "primary": "[if(equals(copyIndex('ipConfigurations'),0),'true','false')]",
+                            "subnet": {
+                                "id": "[variables('subnets')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole].id]"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "value": "[variables('ipConfigurationsObj')[string('ipConfigurations')]]",
+            "type": "array"
+        }
+    }
+}

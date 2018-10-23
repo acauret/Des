@@ -1,0 +1,588 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "xscsLoadBalancerName": {
+            "defaultValue": "sap-lb",
+            "type": "string"
+        },
+        "ascsInstanceNumberERS": {
+            "defaultValue": 10,
+            "type": "int"
+        },
+        "ascsInstanceNumber": {
+            "defaultValue": 0,
+            "type": "int"
+        },
+        "scsInstanceNumber": {
+            "defaultValue": 1,
+            "type": "int"
+        },
+        "scsInstanceNumberERS": {
+            "defaultValue": 11,
+            "type": "int"
+        },        
+        "stackType": {
+            "type": "string",
+            "allowedValues": [
+                "ABAP+JAVA"
+            ],
+            "defaultValue": "ABAP+JAVA",
+            "metadata": {
+                "description": "The type of the operating system you want to deploy."
+            }
+        }                
+    },
+    "variables": {
+        "lbrulePrefix": "lb-",
+        "lbIdleTimeoutInMinutes": 30,
+        "ersLoadBalancerFrontend": "ersfrontend",
+        "ersBackendPool": "ersbackend",
+        "ersProbePort": "ersprobe",
+        "ersProbePortInternal": "[add(62100, parameters('ascsInstanceNumberERS'))]",
+        "xscsLoadBalancerFrontend": "scsfrontend",
+        "xscsBackendPool": "scsbackend",
+        "xscsProbePort": "scsprobe",
+        "xscsProbePortInternal": "[add(62000, parameters('ascsInstanceNumber'))]",
+        "ascsLoadBalancingRulesERS": [
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3300, parameters('ascsInstanceNumberERS'))]",
+                    "backendPort": "[add(3300, parameters('ascsInstanceNumberERS'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '33', padLeft(parameters('ascsInstanceNumberERS'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50013, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50013, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumberERS'), 2, '0'), '13')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50014, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50014, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumberERS'), 2, '0'), '14')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50016, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50016, mul(parameters('ascsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumberERS'), 2, '0'), '16')]"
+            }
+        ],
+        "scsLoadBalancingRulesERS": [
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3300, parameters('scsInstanceNumberERS'))]",
+                    "backendPort": "[add(3300, parameters('scsInstanceNumberERS'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '33', padLeft(parameters('scsInstanceNumberERS'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50013, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50013, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumberERS'), 2, '0'), '13')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50014, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50014, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumberERS'), 2, '0'), '14')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('ersLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('ersBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('ersProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50016, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "backendPort": "[add(50016, mul(parameters('scsInstanceNumberERS'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumberERS'), 2, '0'), '16')]"
+            }
+        ],
+        "ascsLoadBalancingRules": [
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3200, parameters('ascsInstanceNumber'))]",
+                    "backendPort": "[add(3200, parameters('ascsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '32', padLeft(parameters('ascsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3600, parameters('ascsInstanceNumber'))]",
+                    "backendPort": "[add(3600, parameters('ascsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '36', padLeft(parameters('ascsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3900, parameters('ascsInstanceNumber'))]",
+                    "backendPort": "[add(3900, parameters('ascsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '39', padLeft(parameters('ascsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(8100, parameters('ascsInstanceNumber'))]",
+                    "backendPort": "[add(8100, parameters('ascsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '81', padLeft(parameters('ascsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50013, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50013, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumber'), 2, '0'), '13')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50014, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50014, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumber'), 2, '0'), '14')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50016, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50016, mul(parameters('ascsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('ascsInstanceNumber'), 2, '0'), '16')]"
+            }
+        ],
+        "scsLoadBalancingRules": [
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3200, parameters('scsInstanceNumber'))]",
+                    "backendPort": "[add(3200, parameters('scsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '32', padLeft(parameters('scsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3300, parameters('scsInstanceNumber'))]",
+                    "backendPort": "[add(3300, parameters('scsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '33', padLeft(parameters('scsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(3900, parameters('scsInstanceNumber'))]",
+                    "backendPort": "[add(3900, parameters('scsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '39', padLeft(parameters('scsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(8100, parameters('scsInstanceNumber'))]",
+                    "backendPort": "[add(8100, parameters('scsInstanceNumber'))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '81', padLeft(parameters('scsInstanceNumber'), 2, '0'))]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50013, mul(parameters('scsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50013, mul(parameters('scsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumber'), 2, '0'), '13')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50014, mul(parameters('scsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50014, mul(parameters('scsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumber'), 2, '0'), '14')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": "[add(50016, mul(parameters('scsInstanceNumber'), 100))]",
+                    "backendPort": "[add(50016, mul(parameters('scsInstanceNumber'), 100))]",
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '5', padLeft(parameters('scsInstanceNumber'), 2, '0'), '16')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Tcp",
+                    "frontendPort": 2049,
+                    "backendPort": 2049,
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '2049T')]"
+            },
+            {
+                "properties": {
+                    "frontendIPConfiguration": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('xscsLoadBalancerName'), variables('xscsLoadBalancerFrontend'))]"
+                    },
+                    "backendAddressPool": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('xscsLoadBalancerName'), variables('xscsBackendPool'))]"
+                    },
+                    "probe": {
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('xscsLoadBalancerName'), variables('xscsProbePort'))]"
+                    },
+                    "protocol": "Udp",
+                    "frontendPort": 2049,
+                    "backendPort": 2049,
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": "[variables('lbIdleTimeoutInMinutes')]"
+                },
+                "name": "[concat(variables('lbrulePrefix'), '2049U')]"
+            }            
+        ],
+        "loadBalancingRulesERS": {
+            "ABAP+JAVA": "[concat(variables('ascsLoadBalancingRulesERS'), variables('scsLoadBalancingRulesERS'))]"
+        },
+        "xscsLoadBalancingRules": {
+            "ABAP+JAVA": "[concat(variables('ascsLoadBalancingRules'), variables('scsLoadBalancingRules'))]"
+        },
+        "xscsERSLoadBalancingRules": "[concat(variables('xscsLoadBalancingRules')[parameters('stackType')], variables('loadBalancingRulesERS')[parameters('stackType')])]"
+        
+    },
+    "resources":[
+        {
+            "condition": "[equals(parameters('params').vmRoleType,'scs')]",
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('xscsLoadBalancerName')]",
+            "apiVersion": "2018-04-01",
+            "location": "[parameters('params').location]",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [],
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "properties": {
+                            "subnet": {
+                                "id": "[parameters('params').internalSubnetId]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        },
+                        "name": "[variables('xscsLoadBalancerFrontend')]"
+                    },
+                    {
+                        "properties": {
+                            "subnet": {
+                                "id": "[parameters('params').internalSubnetId]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        },
+                        "name": "[variables('ersLoadBalancerFrontend')]"
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[variables('xscsBackendPool')]"
+                    },
+                    {
+                        "name": "[variables('ersBackendPool')]"
+                    }
+                ],
+                "loadBalancingRules": "[variables('xscsERSLoadBalancingRules')]",
+                "probes": [
+                    {
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": "[variables('xscsProbePortInternal')]",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        },
+                        "name": "[variables('xscsProbePort')]"
+                    },
+                    {
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": "[variables('ersProbePortInternal')]",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        },
+                        "name": "[variables('ersProbePort')]"
+                    }
+                ]
+            }
+        }
+    ]
+  }

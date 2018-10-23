@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "params": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "vmSize": {
+            "SAP PreProduction": {
+                "ukwest": {
+                    "App - SAP Insurance": "Standard_E8s_v3",
+                    "App - SAP Utilities": "Standard_E16s_v3",
+                    "App - SAP NW Gateway": "Standard_E4s_v3",
+                    "App - SAP NW PO": "Standard_E4s_v3",
+                    "App - SAP Hybris": "Standard_E16s_v3",
+                    "App - SAP BW": "Standard_E8s_v3",
+                    "App - SAP Cloud Connector": "Standard_E4s_v3",
+                    "SCS - SAP Insurance": "Standard_E2s_v3",
+                    "SCS - SAP Utilities": "Standard_E2s_v3",
+                    "SCS - SAP NW Gateway": "Standard_E2s_v3",
+                    "SCS - SAP NW PO": "Standard_E2s_v3",
+                    "SCS - SAP Hybris": "Standard_E8s_v3",
+                    "SCS - SAP BW": "Standard_E2s_v3",
+                    "SCS - SAP Cloud Connector": "Standard_E2s_v3",
+                    "DB - SAP Insurance": "Standard_E32s_v3",
+                    "DB - SAP Utilities": "Standard_E64s_v3",
+                    "DB - SAP NW Gateway": "Standard_E32s_v3",
+                    "DB - SAP NW PO": "Standard_E16s_v3",
+                    "DB - SAP Hybris": "Standard_E64s_v3",
+                    "DB - SAP BW": "Standard_E32s_v3",
+                    "DB - SAP Cloud Connector": "Standard_E32s_v3"
+                },
+                "uksouth": {
+                    "App - SAP Insurance": "Standard_E8s_v3",
+                    "App - SAP Utilities": "Standard_E16s_v3",
+                    "App - SAP NW Gateway": "Standard_E4s_v3",
+                    "App - SAP NW PO": "Standard_E4s_v3",
+                    "App - SAP Hybris": "Standard_E16s_v3",
+                    "App - SAP BW": "Standard_E8s_v3",
+                    "App - SAP Cloud Connector": "Standard_E4s_v3",
+                    "SCS - SAP Insurance": "Standard_E2s_v3",
+                    "SCS - SAP Utilities": "Standard_E2s_v3",
+                    "SCS - SAP NW Gateway": "Standard_E2s_v3",
+                    "SCS - SAP NW PO": "Standard_E2s_v3",
+                    "SCS - SAP Hybris": "Standard_E8s_v3",
+                    "SCS - SAP BW": "Standard_E2s_v3",
+                    "SCS - SAP Cloud Connector": "Standard_E2s_v3",
+                    "DB - SAP Insurance": "Standard_E32s_v3",
+                    "DB - SAP Utilities": "Standard_E64s_v3",
+                    "DB - SAP NW Gateway": "Standard_E32s_v3",
+                    "DB - SAP NW PO": "Standard_E16s_v3",
+                    "DB - SAP Hybris": "Standard_E64s_v3",
+                    "DB - SAP BW": "Standard_E32s_v3",
+                    "DB - SAP Cloud Connector": "Standard_E32s_v3"
+                }
+            }
+        },
+        "hardwareProfile": {
+            "vmSize": "[variables('vmSize')[parameters('params').subscription][parameters('params').location][parameters('params').vmRole]]"
+        }
+    },
+    "resources": [],
+    "outputs": {
+        "output": {
+            "value": "[variables('hardwareProfile')]",
+            "type": "object"
+        }
+    }
+}
