@@ -122,7 +122,7 @@ foreach($resource in $resourcevalues){
   Set-AzureRmResource -ResourceGroupName $rgname -ResourceName $($resource.Name) -ResourceType $resource.ResourceType -Tag $nullTags -Force
   Set-AzureRmResource -ResourceGroupName $rgname -ResourceName $($resource.Name) -ResourceType $resource.ResourceType -Tag $NewTagsHash -Force
   #
-  #Verify that the tags have been updated at the ResourceGroup Level
+  #Verify that the tags have been updated at the Resource Level
   $updatedTags = (Get-AzureRmResource -Name $resource.Name).tags
   Write-Output -InputObject ("Update Resource Tags:`n {0}" -f $updatedTags)
 }
